@@ -1,6 +1,5 @@
 """Runs the entire program"""
-from src.interface import main
-from flet import app
+from src import run
 
 if __name__ == "__main__":
-    app(target=main)
+    run()
