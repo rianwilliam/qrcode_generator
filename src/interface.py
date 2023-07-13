@@ -4,7 +4,7 @@ Documentation available at: https://flet.dev/docs/
 """
 import shutil
 from src.window_conf import configure_window
-from src.qr_generator import generate_qrcode, erase_qrcode, verify_folder
+from src.qr_generator import generate_qrcode, erase_qrcode, verify_folder, get_qrcode
 from flet import (
     ElevatedButton,
     FilePicker,
@@ -28,16 +28,14 @@ def main(page: Page) -> None:
     verify_folder()
     erase_qrcode()
 
-    def save_qrcode(img_path: str, save_path: str) -> None:
+
+    def save_qrcode(e) -> None:
         """
         Using lib shutil we will copy the image that was saved
         in the assets folder to the directory that the user selected
-
-        * Args
-            \t - img_path (str): Directory path where the image is located
-            \t - save_path (str): User-selected directory where the image will be saved
         """
-        shutil.copy(img_path,save_path.path)
+        img_path = get_qrcode()
+        shutil.copy(img_path,directory_selector.result.path)
 
     def do_not_save_qrcode(e) -> None:
         """
@@ -66,7 +64,9 @@ def main(page: Page) -> None:
         Executes the create qr code function gets the image path
         and adds it in a column to be displayed to the user
         """
-        img_path = generate_qrcode(content_field.value)
+        generate_qrcode(content_field.value)
+        img_path = get_qrcode()
+
         img_container = Container(
             content=Image(src=img_path,width=300,height=300),
             alignment=alignment.center
@@ -78,7 +78,6 @@ def main(page: Page) -> None:
             on_click=lambda _: directory_selector.save_file(file_name="QRcode.png",initial_directory=".")
         )
 
-        directory_selector.on_result = lambda _: save_qrcode(img_path, directory_selector.result)
 
         img_collumn.controls.clear()
         img_collumn.controls = [
@@ -89,6 +88,7 @@ def main(page: Page) -> None:
         create_qr_btn.disabled = True
         content_field.disabled = True
 
+        directory_selector.on_result = save_qrcode
         page.update()
 
     content_field = TextField(label="Insira o conteúdo",on_change=verify_text_fied)

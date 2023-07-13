@@ -19,15 +19,17 @@ def generate_qrcode(content: str) -> str:
         \t - full_path (str): Generated qrcode image path
     """
 
-
     random.seed()
-    img_name = str(random.random())[-5::]
+    img_name = str(random.random())[-6::]
     img_type = ".png"
     full_path = path + img_name + img_type
 
     img = qrcode.make(content)
     img.save(full_path)
-    return full_path
+
+def get_qrcode():
+    if os.listdir(path):
+        return os.path.join(path, os.listdir(path)[0])
 
 def erase_qrcode():
     """
