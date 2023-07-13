@@ -4,7 +4,7 @@ Documentation available at: https://flet.dev/docs/
 """
 import shutil
 from src.window_conf import configure_window
-from src.qr_generator import generate_qrcode, erase_qrcode
+from src.qr_generator import generate_qrcode, erase_qrcode, verify_folder
 from flet import (
     ElevatedButton,
     FilePicker,
@@ -25,6 +25,7 @@ def main(page: Page) -> None:
         \t - page: An instance of the Page class from the Flet library
     """
     configure_window(page)
+    verify_folder()
     erase_qrcode()
 
     def save_qrcode(img_path: str, save_path: str) -> None:

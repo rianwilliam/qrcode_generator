@@ -18,6 +18,8 @@ def generate_qrcode(content: str) -> str:
     * Returns:
         \t - full_path (str): Generated qrcode image path
     """
+
+
     random.seed()
     img_name = str(random.random())[-5::]
     img_type = ".png"
@@ -34,3 +36,7 @@ def erase_qrcode():
     for item in os.listdir(path):
         path_item = os.path.join(path, item)
         os.remove(path_item)
+
+def verify_folder():
+    if not os.path.exists(path):
+        os.makedirs(path)
