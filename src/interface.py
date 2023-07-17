@@ -36,6 +36,7 @@ def main(page: Page) -> None:
         """
         img_path = get_qrcode()
         shutil.copy(img_path,directory_selector.result.path)
+        erase_qrcode()
 
     def do_not_save_qrcode(e) -> None:
         """
