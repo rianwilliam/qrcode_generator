@@ -28,6 +28,10 @@ def main(page: Page) -> None:
     verify_folder()
     erase_qrcode()
 
+    def clean_fields():
+        img_collumn.controls.clear()
+        content_field.value = ""
+        main_column.update()
 
     def save_qrcode(e) -> None:
         """
@@ -37,6 +41,8 @@ def main(page: Page) -> None:
         img_path = get_qrcode()
         shutil.copy(img_path,directory_selector.result.path)
         erase_qrcode()
+        content_field.disabled = False
+        clean_fields()
 
     def do_not_save_qrcode(e) -> None:
         """
@@ -44,10 +50,9 @@ def main(page: Page) -> None:
         the created image is deleted and the element values are reset
         """
         erase_qrcode()
-        img_collumn.controls.clear()
         content_field.disabled = False
-        content_field.value = ""
-        main_column.update()
+        clean_fields()
+        
 
     def verify_text_fied(e):
         """
@@ -78,7 +83,6 @@ def main(page: Page) -> None:
             text="Salvar QRCode",
             on_click=lambda _: directory_selector.save_file(file_name="QRcode.png",initial_directory=".")
         )
-
 
         img_collumn.controls.clear()
         img_collumn.controls = [
